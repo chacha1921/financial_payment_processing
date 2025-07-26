@@ -1,0 +1,43 @@
+server:
+  port: 8183
+
+user-config:
+  username: test
+  password: test_pwd
+  roles:
+    - USER
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mydb
+    username: myuser
+    password: mypassword
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+
+kafka-config:
+  bootstrap-servers: localhost:19092, localhost:29092, localhost:39092
+  topic-name: payment-created
+  num-of-partitions: 3
+  replication-factor: 3
+
+kafka-consumer-config:
+  key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+  trusted-packages: "*"
+  auto-offset-reset: latest
+
+
+
+kafka-producer-config:
+  key-serializer-class: org.apache.kafka.common.serialization.StringSerializer
+  value-serializer-class: org.springframework.kafka.support.serializer.JsonSerializer
+  acks: all
+  request-timeout-ms: 60000
+  retry-count: 3
+
+
