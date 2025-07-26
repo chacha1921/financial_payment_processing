@@ -62,18 +62,7 @@ This design enhances scalability, maintainability, and resilience by clearly div
 
 ## Project Structure
 
-financial_payment_processing/
-├── app-config-data/ # Shared config models
-├── config_server/ # Spring Cloud Config Server
-├── config_server_repository/ # Centralized config files
-├── docker_compose/ # Docker Compose setup
-├── kafka/
-│ ├── kafka-producer/ # Kafka producer utility
-│ └── kafka-consumer/ # Kafka consumer utility
-├── payment-command-service/ # API for receiving payments
-├── payment-dispatcher-service/ # Executes payment logic and emits events
-└── payment-query-service/ # Exposes payment status read API
-
+![Project Structure](doc/arch.svg)
 
 - **app-config-data:** Centralized configuration data models shared across services.  
 - **config_server:** Spring Cloud Config Server providing externalized configuration.  
@@ -85,6 +74,10 @@ financial_payment_processing/
 - **payment-command-service:** API gateway and payment ingestion service.  
 - **payment-dispatcher-service:** Service responsible for consuming payment orders, invoking payment providers, retrying, and emitting domain events.  
 - **payment-query-service:** Service exposing APIs for querying payment status.
+
+## Docker
+
+![Project Structure](doc/docker.png)
 
 1. **Clone the repository**
 
