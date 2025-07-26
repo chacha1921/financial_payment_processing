@@ -2,17 +2,17 @@
 
 ## Overview
 
-This project implements distributed payment processing system designed to ingest payment orders, process payments with external providers under strict constraints, and provide reliable status tracking. The system is built using Java 21, Spring Boot, Kafka, and supports extensibility for multiple payment providers.
+This project implements distributed payment processing system designed to ingest payment orders, process payments with external providers under strict constraints, and provide reliable status tracking. The system is built using Java 21, Spring Boot, Kafka, and supports multiple payment providers.
 
 ### Why 3 Microservices? — CQRS Implementation
 
-The system is architected as three distinct microservices — 
+The system is architected as three distinct microservices
 
 - **Payment Command Service**  
 - **Payment Dispatcher Service**  
 - **Payment Query Service**
 
-— to implement **CQRS (Command Query Responsibility Segregation)**, which separates the concerns of command processing (writes) from query handling (reads).
+To implement **CQRS (Command Query Responsibility Segregation)**, which separates the concerns of command processing (writes) from query handling (reads).
 
 **Benefits of CQRS in this design:**
 
@@ -96,16 +96,18 @@ GET /payments/{paymentId} — Query payment status
 
 ### 2. Guarantee At-Least-Once Delivery  
 - **Solution:**  
-  Payment orders are published to Kafka topics, providing durable message storage. The **payment-dispatcher-service** consumes these messages and processes payments reliably. Kafka’s persistence guarantees that messages are not lost and are retried if processing fails or the service restarts.
+  The **payment-command-service**  uses the Transactional Outbox Pattern to ensure reliable and consistent message delivery. When a payment order is received, it is stored in the database along with an outbox event as part of the same database transaction.
+A separate outbox processor periodically reads these events and publishes them to Kafka. This guarantees that no payment order is lost, even in case of service crashes.
+The payment-dispatcher-service consumes these Kafka events and handles the actual payment processing, completing the at-least-once delivery pipeline.
 
 
 ### 3. Detect and Reject Duplicates  
 - **Solution:**  
-  Idempotency is achieved using the payment ID as a unique key stored in a relational database (such as PostgreSQL). Before processing, the **payment-dispatcher-service** verifies if the payment has already been handled. Unique constraints and checks prevent duplicate processing, surviving across service restarts and retries.
+  Idempotency is achieved using the payment ID as a unique key stored in a relational database (such as PostgreSQL). Before processing, the **payment-command-service** verifies if the payment has already been handled. Unique constraints and checks prevent duplicate processing, surviving across service restarts and retries.
 
 ### 4. Implement Intelligent Retries  
 - **Solution:**  
-  The system retries failed payment attempts intelligently with exponential backoff when transient errors or timeouts occur. These retries respect the global 2 TPS rate limit, ensuring robustness without violating provider constraints.
+  The system retries failed payment attempts intelligently with exponential backoff when transient errors or timeouts occur.
 
 ### 5. Expose Payment Status  
 - **Solution:**  
