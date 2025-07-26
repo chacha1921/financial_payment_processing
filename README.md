@@ -61,8 +61,7 @@ This design enhances scalability, maintainability, and resilience by clearly div
 ---
 
 ## Project Structure
-
-![Project Structure](doc/arch.svg)
+![System Architecture](doc/arch.svg)
 
 - **app-config-data:** Centralized configuration data models shared across services.  
 - **config_server:** Spring Cloud Config Server providing externalized configuration.  
@@ -76,9 +75,7 @@ This design enhances scalability, maintainability, and resilience by clearly div
 - **payment-query-service:** Service exposing APIs for querying payment status.
 
 ## Docker
-
-![Project Structure](doc/docker.png)
-
+![System Architecture](doc/docker.png)
 1. **Clone the repository**
 
    ```bash
@@ -120,7 +117,7 @@ GET /payments/{paymentId} — Query payment status
   Upon payment completion or failure, the **payment-dispatcher-service** publishes domain events to Kafka topics. This is done reliably using the transactional outbox pattern, ensuring that event emission is consistent with state changes and preventing loss of critical notifications for downstream systems.
 
 
-  Future Implementation Due to time constraint
+ Future Implementation (Due to time constraints)
 
 ### 7. Adhere to Global Rate Limits (2 TPS)  
 - **Solution:**  
@@ -129,5 +126,11 @@ GET /payments/{paymentId} — Query payment status
 ### 8. Facilitate Provider Extensibility  
 - **Solution:**  
   The architecture employs the Strategy and Adapter patterns to abstract payment provider integrations. Adding new providers requires implementing a common interface without altering the core ingestion or processing logic, promoting maintainability and extensibility.
+
+  
+
+
+👤 **Chalie Lijalem**  
+
 
 
