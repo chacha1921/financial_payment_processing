@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: payment-command-service
+  config:
+    import: "optional:config-server:"
+  cloud:
+    config:
+      fail-fast: true
+      username: spring_cloud_user
+      password: random_pw
+      uri: http://localhost:8888

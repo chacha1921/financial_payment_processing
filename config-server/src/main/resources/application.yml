@@ -1,0 +1,27 @@
+server:
+  port: 8888
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.config: DEBUG
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///Users/chalielijalem/Downloads/payment-processing-gateway/config-server-repository
+          skipSslValidation: true
+          clone-on-start: true
+          force-pull: true
+#          username: your username
+#          password: token
+          default-label: main
+      fail-fast: true
+  security:
+    user:
+      name: spring_cloud_user
+      password: random_pw
+
