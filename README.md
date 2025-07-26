@@ -6,13 +6,13 @@ This project implements distributed payment processing system designed to ingest
 
 ### Why 3 Microservices? — CQRS Implementation
 
-The system is architected as three distinct microservices — 
+The system is architected as three distinct microservices 
 
 - **Payment Command Service**  
 - **Payment Dispatcher Service**  
 - **Payment Query Service**
 
-— to implement **CQRS (Command Query Responsibility Segregation)**, which separates the concerns of command processing (writes) from query handling (reads).
+To implement **CQRS (Command Query Responsibility Segregation)**, which separates the concerns of command processing (writes) from query handling (reads).
 
 **Benefits of CQRS in this design:**
 
@@ -61,19 +61,6 @@ This design enhances scalability, maintainability, and resilience by clearly div
 ---
 
 ## Project Structure
-
-financial_payment_processing/
-├── app-config-data/ # Shared config models
-├── config_server/ # Spring Cloud Config Server
-├── config_server_repository/ # Centralized config files
-├── docker_compose/ # Docker Compose setup
-├── kafka/
-│ ├── kafka-producer/ # Kafka producer utility
-│ └── kafka-consumer/ # Kafka consumer utility
-├── payment-command-service/ # API for receiving payments
-├── payment-dispatcher-service/ # Executes payment logic and emits events
-└── payment-query-service/ # Exposes payment status read API
-
 
 - **app-config-data:** Centralized configuration data models shared across services.  
 - **config_server:** Spring Cloud Config Server providing externalized configuration.  
@@ -127,7 +114,7 @@ GET /payments/{paymentId} — Query payment status
   Upon payment completion or failure, the **payment-dispatcher-service** publishes domain events to Kafka topics. This is done reliably using the transactional outbox pattern, ensuring that event emission is consistent with state changes and preventing loss of critical notifications for downstream systems.
 
 
-  Future Implementation Due to time constraint
+ Future Implementation (Due to time constraints)
 
 ### 7. Adhere to Global Rate Limits (2 TPS)  
 - **Solution:**  
@@ -136,5 +123,11 @@ GET /payments/{paymentId} — Query payment status
 ### 8. Facilitate Provider Extensibility  
 - **Solution:**  
   The architecture employs the Strategy and Adapter patterns to abstract payment provider integrations. Adding new providers requires implementing a common interface without altering the core ingestion or processing logic, promoting maintainability and extensibility.
+
+  
+
+
+👤 **Chalie Lijalem**  
+
 
 
